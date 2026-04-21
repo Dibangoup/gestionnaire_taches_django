@@ -1,17 +1,17 @@
-from django.shortcuts import render
-
-# 1. Importe ton modèle Project ici (depuis le fichier models actuel '.')
+from django.shortcuts import render, get_object_or_404 # <-- Ajoute cet outil ici
 from .models import Project
 
-def project_list(request):
-    # 2. Utilise ta ligne magique pour récupérer les projets et stocke-les dans une variable
-    projects = Project.objects.all()
+# ... (garde ta fonction project_list au-dessus) ...
+
+def project_detail(request, id):
+    # On utilise l'outil pro pour récupérer le projet (ou afficher une erreur 404)
+    project = get_object_or_404(Project, id=id)
     
-    # On crée un dictionnaire qu'on appelle souvent "context". 
-    # C'est le colis de données qu'on va envoyer à notre page HTML.
+    # On prépare le "colis" pour la page HTML
+    # Attention: cette fois on n'envoie qu'UN SEUL projet, pas une liste
     context = {
-        'projects': projects
+        'project': project
     }
     
-    # 3. On demande à Django de "rendre" (render) la page HTML en lui passant notre colis
-    return render(request, 'tasks/project_list.html', context)
+    # On renvoie vers un nouveau fichier HTML qu'on va créer
+    return render(request, 'tasks/project_detail.html', context)
