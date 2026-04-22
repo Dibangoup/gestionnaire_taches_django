@@ -2,27 +2,49 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes Projets</title>
+    <title>Détail du projet</title>
 </head>
 <body>
 
     <h1>{{ project.name }}</h1>
-
     <p>{{ project.description }}</p>
 
     <a href="{% url 'project_list' %}">Retour à la liste</a>
+
     <h2>Tâches à réaliser :</h2>
     <ul>
         {% for task in project.tasks.all %}
             <li>
                 {{ task.title }} 
-                
                 (Statut : {{ task.status }})
             </li>
         {% empty %}
             <li>Aucune tâche n'a encore été créée pour ce projet.</li>
         {% endfor %}
     </ul>
+
+    <hr>
+    <h3>Ajouter une nouvelle tâche</h3>
+    
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div>
+            <label for="title">Titre de la tâche :</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+
+        <div>
+            <label for="status">Statut :</label>
+            <select name="status" id="status">
+                <option value="TODO">À faire</option>
+                <option value="IN_PROGRESS">En cours</option>
+                <option value="DONE">Terminée</option>
+            </select>
+        </div>
+
+        <button type="submit">Ajouter la tâche</button>
+    </form>
 
 </body>
 </html>

@@ -2,8 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Quand quelqu'n va sur la racine de l'application, on lance ta vue 'project_list'
+    # 1. La route de la page d'accueil
+    # Si l'utilisateur va sur http://127.0.0.1:8000/
+    # Django lance la fonction 'project_list' dans views.py
     path('', views.project_list, name='project_list'),
-    # La nouvelle route dynamique pour le détail d'un projet
+    
+    # 2. La route dynamique pour la page de détail d'un projet
+    # Si l'utilisateur va sur http://127.0.0.1:8000/projet/1/
+    # Django capture le '1', le stocke dans la variable <id>, 
+    # et lance la fonction 'project_detail' dans views.py
     path('projet/<int:id>/', views.project_detail, name='project_detail'),
 ]

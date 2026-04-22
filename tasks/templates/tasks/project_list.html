@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Projets</title>
+</head>
+<body>
+    <h1>Liste de mes projets</h1>
+
+    <ul>
+        {% for project in projects %}
+            <li>
+                <a href="{% url 'project_detail' project.id %}">
+                    <strong>{{ project.name }}</strong>
+                </a>
+                - {{ project.description }}
+            </li>
+        {% empty %}
+            <li>Vous n'avez aucun projet pour le moment.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
