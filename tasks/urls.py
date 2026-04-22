@@ -14,4 +14,6 @@ urlpatterns = [
     path('projet/<int:id>/', views.project_detail, name='project_detail'),
     # La route pour supprimer une tâche spécifique
     path('tache/<int:task_id>/supprimer/', views.delete_task, name='delete_task'),
+    # La route pour modifier une tâche
+    path('tache/<int:task_id>/modifier/', views.update_task, name='update_task'),
 ]

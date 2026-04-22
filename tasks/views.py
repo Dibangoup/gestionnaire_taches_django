@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Project
+from django.shortcuts import render, get_object_or_404,redirect
+from .models import Project, Task
 
 # --- 1. La fonction pour la page d'accueil (Celle qui a dû disparaître !) ---
 def project_list(request):
@@ -35,3 +35,25 @@ def delete_task(request, task_id):
     
     # Si c'est un simple GET, on redirige sans rien faire
     return redirect('project_detail', id=task.project.id)
+
+def update_task(request, task_id):
+    # 1. On récupère la tâche
+    task = get_object_or_404(Task, id=task_id)
+    
+    # 2. Si l'utilisateur a cliqué sur "Enregistrer" (POST)
+    if request.method == 'POST':
+        # On remplace les anciennes valeurs par les nouvelles
+        task.title = request.POST.get('title')
+        task.status = request.POST.get('status')
+        
+        # L'action magique : on sauvegarde la mise à jour !
+        task.save()
+        
+        # On le renvoie sur la page de son projet
+        return redirect('project_detail', id=task.project.id)
+    
+    # 3. Si l'utilisateur veut juste afficher la page de modification (GET)
+    context = {
+        'task': task
+    }
+    return render(request, 'tasks/task_update.html', context)

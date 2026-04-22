@@ -15,8 +15,14 @@
     <ul>
         {% for task in project.tasks.all %}
             <li>
-                {{ task.title }} 
-                (Statut : {{ task.status }})
+                <strong>{{ task.title }}</strong> (Statut : {{ task.status }})
+                
+                <a href="{% url 'update_task' task.id %}">Modifier</a>
+
+                <form method="POST" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="color: red;">Supprimer</button>
+                </form>
             </li>
         {% empty %}
             <li>Aucune tâche n'a encore été créée pour ce projet.</li>
@@ -24,6 +30,7 @@
     </ul>
 
     <hr>
+    
     <h3>Ajouter une nouvelle tâche</h3>
     
     <form method="POST" action="">

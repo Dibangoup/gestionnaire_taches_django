@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier la tâche</title>
+</head>
+<body>
+
+    <h1>Modifier la tâche</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div>
+            <label for="title">Titre de la tâche :</label>
+            <input type="text" name="title" id="title" value="{{ task.title }}" required>
+        </div>
+
+        <div>
+            <label for="status">Statut :</label>
+            <select name="status" id="status">
+                <option value="TODO" {% if task.status == 'TODO' %}selected{% endif %}>À faire</option>
+                <option value="IN_PROGRESS" {% if task.status == 'IN_PROGRESS' %}selected{% endif %}>En cours</option>
+                <option value="DONE" {% if task.status == 'DONE' %}selected{% endif %}>Terminée</option>
+            </select>
+        </div>
+
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
+
+    <br>
+    <a href="{% url 'project_detail' task.project.id %}">Annuler</a>
+
+</body>
+</html>
