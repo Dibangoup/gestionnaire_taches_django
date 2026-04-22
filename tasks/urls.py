@@ -12,4 +12,6 @@ urlpatterns = [
     # Django capture le '1', le stocke dans la variable <id>, 
     # et lance la fonction 'project_detail' dans views.py
     path('projet/<int:id>/', views.project_detail, name='project_detail'),
+    # La route pour supprimer une tâche spécifique
+    path('tache/<int:task_id>/supprimer/', views.delete_task, name='delete_task'),
 ]
