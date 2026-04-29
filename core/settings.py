@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,19 +84,19 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         
         # Le nom exact de la base de données que tu as créée dans pgAdmin
-        'NAME': 'gestionnaire_taches_db', 
+        'NAME': getenv('NAME'), 
         
         # Le nom du super-utilisateur par défaut de PostgreSQL
-        'USER': 'postgres', 
+        'USER': getenv('USER'), 
         
         # Le mot de passe que tu as choisi lors de l'installation
-        'PASSWORD': 'Jordan2006', 
+        'PASSWORD': getenv('PASSWORD'), 
         
         # L'adresse de ton ordinateur ("localhost" ou "127.0.0.1")
-        'HOST': 'localhost', 
+        'HOST': getenv('HOST'), 
         
         # La porte d'entrée de PostgreSQL (tu l'as vue dans pgAdmin)
-        'PORT': '5432', 
+        'PORT': getenv('PORT'), 
     }
 }
 

@@ -13,6 +13,26 @@ def project_list(request):
 # --- 2. La nouvelle fonction pour la page de détail ---
 def project_detail(request, id):
     project = get_object_or_404(Project, id=id)
+    
+    # --- LE "C" DE CREATE ---
+    # 1. INTERCEPTION : Si le formulaire est envoyé
+    if request.method == 'POST':
+        # 2. EXTRACTION
+        titre_saisi = request.POST.get('title')
+        statut_choisi = request.POST.get('status')
+        
+        # 3. SAUVEGARDE EN BASE DE DONNÉES
+        Task.objects.create(
+            title=titre_saisi,
+            status=statut_choisi,
+            project=project
+        )
+        
+        # 4. REDIRECTION (Pour recharger la page proprement)
+        return redirect('project_detail', id=project.id)
+    # ----------------------------------------------
+    
+    # La suite normale (Si on veut juste afficher la page)
     context = {
         'project': project
     }
