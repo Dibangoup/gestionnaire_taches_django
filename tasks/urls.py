@@ -16,4 +16,13 @@ urlpatterns = [
     path('tache/<int:task_id>/supprimer/', views.delete_task, name='delete_task'),
     # La route pour modifier une tâche
     path('tache/<int:task_id>/modifier/', views.update_task, name='update_task'),
+
+    # =============================================
+    # ROUTES API REST (Pour le frontend React)
+    # =============================================
+    path('api/projets/', views.api_project_list, name='api_project_list'),
+    path('api/projets/<int:id>/', views.api_project_detail, name='api_project_detail'),
+    path('api/taches/', views.api_task_create, name='api_task_create'),
+    path('api/taches/<int:task_id>/', views.api_task_update, name='api_task_update'),
+    path('api/taches/<int:task_id>/supprimer/', views.api_task_delete, name='api_task_delete'),
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Project, Task
 
 # --- 1. La fonction pour la page d'accueil (Celle qui a dû disparaître !) ---
@@ -14,7 +14,6 @@ def project_list(request):
 def project_detail(request, id):
     project = get_object_or_404(Project, id=id)
     
-    # --- LE "C" DE CREATE ---
     # 1. INTERCEPTION : Si le formulaire est envoyé
     if request.method == 'POST':
         # 2. EXTRACTION
@@ -77,3 +76,57 @@ def update_task(request, task_id):
         'task': task
     }
     return render(request, 'tasks/task_update.html', context)
+
+
+# =============================================
+# VUES API REST (Pour le frontend React)
+# =============================================
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProjectSerializer, TaskSerializer
+
+
+@api_view(['GET'])
+def api_project_list(request):
+    """API : Retourne la liste de tous les projets en JSON."""
+    projects = Project.objects.all()
+    serializer = ProjectSerializer(projects, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def api_project_detail(request, id):
+    """API : Retourne le détail d'un projet avec ses tâches en JSON."""
+    project = get_object_or_404(Project, id=id)
+    serializer = ProjectSerializer(project)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def api_task_create(request):
+    """API : Crée une nouvelle tâche."""
+    serializer = TaskSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def api_task_update(request, task_id):
+    """API : Met à jour une tâche existante."""
+    task = get_object_or_404(Task, id=task_id)
+    serializer = TaskSerializer(task, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def api_task_delete(request, task_id):
+    """API : Supprime une tâche."""
+    task = get_object_or_404(Task, id=task_id)
+    task.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
